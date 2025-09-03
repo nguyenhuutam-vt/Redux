@@ -31,6 +31,45 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async (user: IUser, thunkAPI) => {
+    const response = await fetch(`http://localhost:8000/users/${user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+        name: user.name,
+      }),
+    });
+    const data = await response.json();
+    if (data && data.id) {
+      // Handle successful user creation
+      thunkAPI.dispatch(fetchUser());
+    }
+    return data;
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (id: number, thunkAPI) => {
+    const response = await fetch(`http://localhost:8000/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Handle successful user creation
+    thunkAPI.dispatch(fetchUser());
+
+    return id;
+  }
+);
+
 export interface IUser {
   id?: number;
   email: string;

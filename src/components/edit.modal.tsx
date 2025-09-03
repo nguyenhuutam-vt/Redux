@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { createUser, IUser } from "../redux/user/userSlice";
+import { createUser, IUser, updateUser } from "../redux/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { Bounce, toast } from "react-toastify";
 
@@ -21,7 +21,7 @@ const EditModal = (props: IProps) => {
   useEffect(() => {
     setEmail(user?.email || "");
     setName(user?.name || "");
-  }, [user, show, isCreateSuccess]);
+  }, [user, show]);
   const handleSubmit = () => {
     if (!user) {
       const data = { name, email };
@@ -45,7 +45,21 @@ const EditModal = (props: IProps) => {
     } else {
       const data = { id: user.id, name, email };
       // Gửi data lên server hoặc dispatch action
-      // dispatch(updateUser(data));
+      dispatch(updateUser(data));
+
+      toast("User Update successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
+      onClose();
     }
   };
 
@@ -63,7 +77,8 @@ const EditModal = (props: IProps) => {
               placeholder="name@example.com"
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
-              value={user?.email}
+              // value={user?.email}
+              value={email}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -71,7 +86,8 @@ const EditModal = (props: IProps) => {
             <Form.Control
               as="textarea"
               rows={3}
-              value={user?.name}
+              // value={user?.name}
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>

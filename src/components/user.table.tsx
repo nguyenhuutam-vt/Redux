@@ -5,11 +5,14 @@ import { fetchUser, IUser } from "../redux/user/userSlice";
 import { Bounce, toast } from "react-toastify";
 import { Button } from "react-bootstrap";
 import EditModal from "./edit.modal";
+import DeleteModal from "./delete.modal";
 const UsersTable = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.user.listUser);
   const [editUser, setEditUser] = useState<IUser | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
@@ -21,6 +24,12 @@ const UsersTable = () => {
         onClose={() => setShowEditModal(false)}
         user={editUser}
       />
+      <DeleteModal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        user={editUser}
+      />
+
       <Button
         variant="primary"
         onClick={() => {
@@ -60,6 +69,8 @@ const UsersTable = () => {
                   variant="secondary"
                   onClick={() => {
                     // Handle delete action
+                    setEditUser(user);
+                    setShowDeleteModal(true);
                   }}
                 >
                   Delete

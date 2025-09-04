@@ -31,8 +31,9 @@ const Header = () => {
                 <Navbar.Text>Dark Mode</Navbar.Text>
               )
             }
-            onChange={() =>
-              dispatch(changMode(mode === "light" ? "dark" : "light"))
+            defaultChecked={mode === "dark" ? true : false}
+            onChange={(e) =>
+              dispatch(changMode(e.target.checked ? "dark" : "light"))
             }
           />
         </Navbar.Collapse>

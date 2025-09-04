@@ -1,23 +1,28 @@
-import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { deleteUser, IUser } from "../redux/user/userSlice";
 import { useAppDispatch } from "../redux/hook";
 import { Bounce, toast } from "react-toastify";
+import { deleteBlog, IBlog } from "../redux/blog/blogSlice";
 
 interface IProps {
   show: boolean;
   onClose: () => void;
   user?: IUser | null;
+  blog?: IBlog | null;
 }
 
 function DeleteModal(props: IProps) {
-  const { show, onClose, user } = props;
+  const { show, onClose, user, blog } = props;
   const dispatch = useAppDispatch();
 
   const handleDelete = (id: number | undefined) => {
     // Dispatch delete action
-    dispatch(deleteUser(id!));
+    if (user) {
+      dispatch(deleteUser(id!));
+    } else if (blog) {
+      dispatch(deleteBlog(id!));
+    }
     toast("User deleted successfully!", {
       position: "top-right",
       autoClose: 5000,
@@ -46,7 +51,7 @@ function DeleteModal(props: IProps) {
           <Button
             variant="primary"
             onClick={() => {
-              handleDelete(user?.id);
+              handleDelete(user ? user.id : blog ? blog.id : 0);
             }}
           >
             Delete User

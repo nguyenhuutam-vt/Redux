@@ -1,8 +1,7 @@
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UsersTable from "./user.table";
-import UserList from "./user";
-import { Button } from "react-bootstrap";
+import BlogTable from "./blog.table";
 
 const TabsContent = () => {
   return (
@@ -16,7 +15,7 @@ const TabsContent = () => {
           <UsersTable />
         </Tab>
         <Tab eventKey="blog" title="Blogs">
-          <UsersTable />
+          <BlogTable />
         </Tab>
       </Tabs>
     </>
